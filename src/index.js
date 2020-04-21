@@ -39,6 +39,8 @@ class ToDoItem extends React.Component {
                     onChange={(e) => this.props.handleUpdate(e)}
                 />
                 {this.props.text}
+                &nbsp;&nbsp;&nbsp;
+                <button name={this.props.id} onClick={(e) => this.props.handleDelete(e)}>-</button>
             </label>
         );
     }
@@ -147,6 +149,18 @@ class Checklist extends React.Component {
         } else {
             console.log("unknown text " + text)
         }
+    }
+
+    handleDelete = event => {
+        const { name } = event.target
+        const todos = this.state.todos
+
+        axios.delete(exports.backend.url + '/api/todo?id=' + name)
+            .then(() => {
+                this.setState({
+                    todos: todos.filter(item => item.id !== name)
+                })
+            })
     }
 
     render() {
