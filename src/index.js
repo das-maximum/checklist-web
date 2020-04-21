@@ -55,7 +55,9 @@ class ToDos extends React.Component {
                                 done={todo.done}
                                 text={todo.text}
                                 id={todo.id}
-                                handleUpdate={(e) => this.props.handleUpdate(e)} />
+                                handleUpdate={(e) => this.props.handleUpdate(e)}
+                                handleDelete={(e) => this.props.handleDelete(e)}
+                            />
                         </li>
                 )}
             </ul>
@@ -84,9 +86,6 @@ class Checklist extends React.Component {
 
     updateServer = todo => {
         axios.put(exports.backend.url + '/api/todo', todo)
-            .then(response => {
-                console.log(response)
-            })
             .catch(error => {
                 console.log(error)
             })
@@ -105,7 +104,6 @@ class Checklist extends React.Component {
     addItem = () => {
         axios.post(exports.backend.url + '/api/todo', this.state.newItemName)
             .then(response => {
-                console.log(response)
                 const todos = this.state.todos.slice();
 
                 this.setState({
