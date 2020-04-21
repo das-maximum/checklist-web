@@ -72,6 +72,7 @@ class Checklist extends React.Component {
         this.state = {
             todos: [],
             newItemName: "",
+            doneItemsVisible: true,
         }
     }
 
@@ -130,16 +131,49 @@ class Checklist extends React.Component {
         this.updateServer(todo)
     }
 
+    collapse = event => {
+        const text = event.target.textContent
+
+        if (text === '-') {
+            event.target.textContent = '+'
+            this.setState({
+                doneItemsVisible: !this.state.doneItemsVisible
+            })
+        } else if (text === '+') {
+            event.target.textContent = '-'
+            this.setState({
+                doneItemsVisible: !this.state.doneItemsVisible
+            })
+        } else {
+            console.log("unknown text " + text)
+        }
+    }
+
     render() {
         return (
             <div className="checklist">
                 <NewToDo changeNewItemName={(e) => this.changeNewItemName(e)}
                          addItem={() => this.addItem()}
                 />
-                <span>ToDo</span>
-                <ToDos todos={this.state.todos.filter(todo => !todo.done)} handleUpdate={(e) => this.handleUpdate(e)}/>
-                <span>Done</span>
-                <ToDos todos={this.state.todos.filter(todo => todo.done)} handleUpdate={(e) => this.handleUpdate(e)}/>
+                <div>
+                    <span>ToDo</span>
+                    <ToDos
+                        todos={this.state.todos.filter(todo => !todo.done)}
+                        handleUpdate={(e) => this.handleUpdate(e)}
+                        handleDelete={(e) => this.handleDelete(e)}
+                    />
+                </div>
+                <div>
+                    <span>Done</span>&nbsp;<span><button onClick={(e) => this.collapse(e)}>-</button></span>
+                    {this.state.doneItemsVisible
+                        ? <ToDos
+                            todos={this.state.todos.filter(todo => todo.done)}
+                            handleUpdate={(e) => this.handleUpdate(e)}
+                            handleDelete={(e) => this.handleDelete(e)}
+                        />
+                        : null
+                    }
+                </div>
             </div>
         );
     }
