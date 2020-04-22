@@ -174,8 +174,7 @@ class Checklist extends React.Component {
                     />
                 </div>
                 <div>
-                    <span>Done</span>
-                    &nbsp;
+                    <span>Done{!this.state.doneItemsVisible ? ' (' + this.state.todos.filter(todo => todo.done).length + ')': null}</span>
                     <span>
                         <button onClick={() => this.collapse()}>
                             <Octicon icon={this.state.collapseIcon} />
