@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'
 import exports from './config/default'
+import Octicon, {ChevronDown, ChevronUp, Pencil, Plus, Trashcan} from "@primer/octicons-react";
 
 const axios = require('axios').default
 
@@ -20,10 +21,12 @@ class NewToDo extends React.Component {
 
     render() {
         return (
-          <div>
-              New Item: <input type='text' onKeyPress={(e) => this.keyPress(e)} onChange={(e) => this.props.changeNewItemName(e)} />
-              <button onClick={() => this.props.addItem()}>+</button>
-          </div>
+            <div>
+                New Item: <input type='text' onKeyPress={(e) => this.keyPress(e)} onChange={(e) => this.props.changeNewItemName(e)} />
+                <button onClick={() => this.props.addItem()}>
+                    <Octicon icon={Plus} />
+                </button>
+            </div>
         );
     }
 }
@@ -31,16 +34,19 @@ class NewToDo extends React.Component {
 class ToDoItem extends React.Component {
     render() {
         return (
-            <label>
+            <label className='todoitem'>
                 <input
                     type='checkbox'
                     name={this.props.id}
                     checked={this.props.done}
                     onChange={(e) => this.props.handleUpdate(e)}
                 />
-                {this.props.text}
-                &nbsp;&nbsp;&nbsp;
-                <button name={this.props.id} onClick={(e) => this.props.handleDelete(e)}>-</button>
+                <span>
+                    {this.props.text}
+                </span>
+                <button name={this.props.id} onClick={(e) => this.props.handleDelete(e)}>
+                    <Octicon icon={Trashcan} />
+                </button>
             </label>
         );
     }
@@ -75,6 +81,7 @@ class Checklist extends React.Component {
             todos: [],
             newItemName: "",
             doneItemsVisible: true,
+            collapseIcon: ChevronUp,
         }
     }
 
@@ -119,6 +126,13 @@ class Checklist extends React.Component {
             })
     }
 
+    collapse = () => {
+        this.setState({
+            collapseIcon: this.state.doneItemsVisible ? ChevronDown : ChevronUp,
+            doneItemsVisible: !this.state.doneItemsVisible
+        })
+    }
+
     handleUpdate = event => {
         const { name } = event.target
         const todos = this.state.todos.slice();
@@ -131,24 +145,6 @@ class Checklist extends React.Component {
         )
 
         this.updateServer(todo)
-    }
-
-    collapse = event => {
-        const text = event.target.textContent
-
-        if (text === '-') {
-            event.target.textContent = '+'
-            this.setState({
-                doneItemsVisible: !this.state.doneItemsVisible
-            })
-        } else if (text === '+') {
-            event.target.textContent = '-'
-            this.setState({
-                doneItemsVisible: !this.state.doneItemsVisible
-            })
-        } else {
-            console.log("unknown text " + text)
-        }
     }
 
     handleDelete = event => {
@@ -178,7 +174,13 @@ class Checklist extends React.Component {
                     />
                 </div>
                 <div>
-                    <span>Done</span>&nbsp;<span><button onClick={(e) => this.collapse(e)}>-</button></span>
+                    <span>Done</span>
+                    &nbsp;
+                    <span>
+                        <button onClick={() => this.collapse()}>
+                            <Octicon icon={this.state.collapseIcon} />
+                        </button>
+                    </span>
                     {this.state.doneItemsVisible
                         ? <ToDos
                             todos={this.state.todos.filter(todo => todo.done)}

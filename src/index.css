@@ -1,3 +1,8 @@
+.todoitem {
+    display: block;
+    min-width: 300px;
+}
+
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 20px;
@@ -6,4 +11,9 @@ body {
 ol, ul {
     padding-left: 30px;
     list-style: none;
+}
+
+button {
+    border: none;
+    background-color: white;
 }
