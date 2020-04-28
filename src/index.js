@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'
 import exports from './config/default'
-import Octicon, {ChevronDown, ChevronUp, Pencil, Plus, Trashcan} from "@primer/octicons-react";
+import Octicon, {ChevronDown, ChevronUp, Plus, Trashcan} from "@primer/octicons-react";
 
 const axios = require('axios').default
 
