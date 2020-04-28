@@ -32,6 +32,10 @@ class NewToDo extends React.Component {
 }
 
 class ToDoItem extends React.Component {
+    onDelete() {
+        this.props.handleDelete(this.props.id)
+    }
+
     render() {
         return (
             <label className='todoitem'>
@@ -44,7 +48,7 @@ class ToDoItem extends React.Component {
                 <span>
                     {this.props.text}
                 </span>
-                <button name={this.props.id} onClick={(e) => this.props.handleDelete(e)}>
+                <button name={this.props.id} onClick={() => this.onDelete()}>
                     <Octicon icon={Trashcan} />
                 </button>
             </label>
@@ -147,15 +151,17 @@ class Checklist extends React.Component {
         this.updateServer(todo)
     }
 
-    handleDelete = event => {
-        const { name } = event.target
+    handleDelete = id => {
         const todos = this.state.todos
 
-        axios.delete(exports.backend.url + '/api/todo?id=' + name)
+        axios.delete(exports.backend.url + '/api/todo?id=' + id)
             .then(() => {
                 this.setState({
-                    todos: todos.filter(item => item.id !== name)
+                    todos: todos.filter(item => item.id !== id)
                 })
+            })
+            .catch(error => {
+                console.log(error)
             })
     }
 
