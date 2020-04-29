@@ -116,6 +116,10 @@ class Checklist extends React.Component {
     }
 
     addItem = () => {
+        if (this.state.newItemName.trim() === "") {
+            return;
+        }
+
         axios.post(exports.backend.url + '/api/todo', this.state.newItemName)
             .then(response => {
                 const todos = this.state.todos.slice();
