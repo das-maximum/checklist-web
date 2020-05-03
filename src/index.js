@@ -15,14 +15,18 @@ class NewToDo extends React.Component {
     keyPress(e) {
         if (e.charCode === 13) {
             this.props.addItem()
-            e.target.value = ""
         }
     }
 
     render() {
         return (
             <div>
-                New Item: <input type='text' onKeyPress={(e) => this.keyPress(e)} onChange={(e) => this.props.changeNewItemName(e)} />
+                New Item:
+                <input type='text'
+                       id='newToDoInput'
+                       onKeyPress={(e) => this.keyPress(e)}
+                       onChange={(e) => this.props.changeNewItemName(e)}
+                />
                 <button onClick={() => this.props.addItem()}>
                     <Octicon icon={Plus} />
                 </button>
@@ -128,6 +132,10 @@ class Checklist extends React.Component {
                     todos: todos.concat(response.data),
                     newItemName: ""
                 })
+
+                document
+                    .getElementById('newToDoInput')
+                    .value = ""
             })
             .catch(error => {
                 console.log(error)
