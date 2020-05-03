@@ -207,6 +207,9 @@ class Checklist extends React.Component {
                         : null
                     }
                 </div>
+                <div>
+                    <span>v{exports.version}</span>
+                </div>
             </div>
         );
     }
