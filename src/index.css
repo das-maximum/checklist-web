@@ -1,19 +1,60 @@
-.todoitem {
-    display: block;
+.container {
     min-width: 300px;
+    max-width: 300px;
+    display: block;
 }
 
-body {
-    font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
+.newitem {
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    vertical-align: center;
 }
 
-ol, ul {
-    padding-left: 30px;
-    list-style: none;
+.iteminput {
+    width: 255px;
+    height: 20px;
+    border-radius: 5px;
+}
+
+.newbutton {
+    float: right;
+    margin-top: 4px;
+    border-radius: 5px;
+}
+
+.todoitem {
+    margin-top: 2px;
+    height: 20px;
+    background-color: white;
+}
+
+.delete {
+    float: right;
+}
+
+.label {
+    display: inline-block;
+    padding-left: 5px;
+}
+
+.itemlist {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input[type=checkbox] {
+    border: 1px black solid;
+    float: left;
 }
 
 button {
     border: none;
     background-color: white;
+    height: 20px;
+}
+
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 10px;
 }

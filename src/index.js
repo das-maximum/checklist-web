@@ -20,14 +20,14 @@ class NewToDo extends React.Component {
 
     render() {
         return (
-            <div>
-                New Item:
+            <div className='newitem'>
                 <input type='text'
-                       id='newToDoInput'
+                       className='iteminput'
+                       placeholder='New Item'
                        onKeyPress={(e) => this.keyPress(e)}
                        onChange={(e) => this.props.changeNewItemName(e)}
                 />
-                <button onClick={() => this.props.addItem()}>
+                <button className='newbutton' onClick={() => this.props.addItem()}>
                     <Octicon icon={Plus} />
                 </button>
             </div>
@@ -42,20 +42,24 @@ class ToDoItem extends React.Component {
 
     render() {
         return (
-            <label className='todoitem'>
+            <div className='todoitem'>
                 <input
                     type='checkbox'
                     name={this.props.id}
                     checked={this.props.done}
                     onChange={(e) => this.props.handleUpdate(e)}
                 />
-                <span>
+                <span className='label'>
                     {this.props.text}
                 </span>
-                <button name={this.props.id} onClick={() => this.onDelete()}>
+                <button
+                    className='delete'
+                    name={this.props.id}
+                    onClick={() => this.onDelete()}
+                >
                     <Octicon icon={Trashcan} />
                 </button>
-            </label>
+            </div>
         );
     }
 }
@@ -63,20 +67,19 @@ class ToDoItem extends React.Component {
 class ToDos extends React.Component {
     render() {
         return (
-            <ul>
+            <div className='itemlist'>
                 {this.props.todos.map(
                     todo =>
-                        <li key={todo.id}>
-                            <ToDoItem
-                                done={todo.done}
-                                text={todo.text}
-                                id={todo.id}
-                                handleUpdate={(e) => this.props.handleUpdate(e)}
-                                handleDelete={(e) => this.props.handleDelete(e)}
-                            />
-                        </li>
+                        <ToDoItem
+                            key={todo.id}
+                            done={todo.done}
+                            text={todo.text}
+                            id={todo.id}
+                            handleUpdate={(e) => this.props.handleUpdate(e)}
+                            handleDelete={(e) => this.props.handleDelete(e)}
+                        />
                 )}
-            </ul>
+            </div>
         );
     }
 }
@@ -88,7 +91,7 @@ class Checklist extends React.Component {
         this.state = {
             todos: [],
             newItemName: "",
-            doneItemsVisible: true,
+            doneItemsVisible: false,
             collapseIcon: ChevronUp,
         }
     }
@@ -179,37 +182,30 @@ class Checklist extends React.Component {
 
     render() {
         return (
-            <div className="checklist">
+            <div className='container'>
                 <NewToDo changeNewItemName={(e) => this.changeNewItemName(e)}
                          addItem={() => this.addItem()}
                 />
-                <div>
-                    <span>ToDo</span>
-                    <ToDos
-                        todos={this.state.todos.filter(todo => !todo.done)}
+                <ToDos
+                    todos={this.state.todos.filter(todo => !todo.done)}
+                    handleUpdate={(e) => this.handleUpdate(e)}
+                    handleDelete={(e) => this.handleDelete(e)}
+                />
+                <div className='donehead'>
+                    Done{!this.state.doneItemsVisible ? ' (' + this.state.todos.filter(todo => todo.done).length + ')': null}
+                    <button onClick={() => this.collapse()}>
+                        <Octicon icon={this.state.collapseIcon} />
+                    </button>
+                </div>
+                {this.state.doneItemsVisible
+                    ? <ToDos
+                        todos={this.state.todos.filter(todo => todo.done)}
                         handleUpdate={(e) => this.handleUpdate(e)}
                         handleDelete={(e) => this.handleDelete(e)}
                     />
-                </div>
-                <div>
-                    <span>Done{!this.state.doneItemsVisible ? ' (' + this.state.todos.filter(todo => todo.done).length + ')': null}</span>
-                    <span>
-                        <button onClick={() => this.collapse()}>
-                            <Octicon icon={this.state.collapseIcon} />
-                        </button>
-                    </span>
-                    {this.state.doneItemsVisible
-                        ? <ToDos
-                            todos={this.state.todos.filter(todo => todo.done)}
-                            handleUpdate={(e) => this.handleUpdate(e)}
-                            handleDelete={(e) => this.handleDelete(e)}
-                        />
-                        : null
-                    }
-                </div>
-                <div>
-                    <span>v{exports.version}</span>
-                </div>
+                    : null
+                }
+                <span>v{exports.version}</span>
             </div>
         );
     }
