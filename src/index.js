@@ -22,6 +22,7 @@ class NewToDo extends React.Component {
         return (
             <div className='newitem'>
                 <input type='text'
+                       id='newToDoInput'
                        className='iteminput'
                        placeholder='New Item'
                        onKeyPress={(e) => this.keyPress(e)}
